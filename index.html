@@ -37,6 +37,10 @@ button:disabled{opacity:0.5;filter:grayscale(30%)}
     <div>
       <h1>Click Speed Test (CPS)</h1>
       <p class="lead">Select time, choose a mode, then click the box to start.</p>
+      <div style="margin-top:12px;color:#bcd9f2;line-height:1.5;max-width:680px">
+        <p><strong>About this tool:</strong> This Clicks Per Second (CPS) tester helps you measure and practice your click speed with multiple game-style modes (Standard, Jitter, Butterfly, Kohi, Hold-Click and Double Click). No account or server-side tracking is required — tests run in your browser.</p>
+        <p>This site stores only minimal data locally (high scores are saved to your browser's <code>localStorage</code> so they persist across visits). For details, see our <a href="privacy.html" style="color:#dbeeff">Privacy Policy</a>. By using the tester you agree to the <a href="terms.html" style="color:#dbeeff">Terms</a>.</p>
+      </div>
     </div>
   </div>
 
@@ -82,6 +86,10 @@ button:disabled{opacity:0.5;filter:grayscale(30%)}
 
   <canvas id="confettiCanvas"></canvas>
 </div>
+
+  <footer style="width:100%;max-width:760px;margin-top:18px;color:rgba(230,238,248,0.8);text-align:center">
+    <small>© 2025 CPS Tester — <a href="privacy.html" style="color:#cfe9ff">Privacy Policy</a> • <a href="terms.html" style="color:#cfe9ff">Terms</a></small>
+  </footer>
 
 <script>
 let clicks = 0;
@@ -217,9 +225,39 @@ function handleBoxClick(e){
 // dblclick handler for Double Click Test
 box.addEventListener('dblclick', (e)=>{ if(!testActive) return; if(modeSelect.value === 'double'){ addClicks(2); } });
 
-// mousedown/mouseup for Hold-Click Test
-box.addEventListener('mousedown',(e)=>{ if(!testActive){ if(allowStart) startTest(); return; } if(modeSelect.value === 'hold'){ addClicks(1); holdInterval = setInterval(()=> addClicks(1), 100); } });
-box.addEventListener('mouseup', ()=>{ if(holdInterval){ clearInterval(holdInterval); holdInterval=null } });
+// mousedown / touchstart handlers for Hold-Click Test
+function beginHoldIfNeeded() {
+  if (modeSelect.value === 'hold') {
+    addClicks(1);
+    if (holdInterval) clearInterval(holdInterval);
+    holdInterval = setInterval(() => addClicks(1), 100);
+  }
+}
+
+box.addEventListener('mousedown', (e) => {
+  if (!testActive) {
+    if (allowStart) startTest();
+    // if mode is hold, start counting immediately on the same press
+    if (allowStart && modeSelect.value === 'hold' && testActive) beginHoldIfNeeded();
+    return;
+  }
+  beginHoldIfNeeded();
+});
+
+box.addEventListener('touchstart', (e) => {
+  e.preventDefault();
+  if (!testActive) {
+    if (allowStart) startTest();
+    if (allowStart && modeSelect.value === 'hold' && testActive) beginHoldIfNeeded();
+    return;
+  }
+  beginHoldIfNeeded();
+}, {passive:false});
+
+function endHoldIfNeeded() { if (holdInterval) { clearInterval(holdInterval); holdInterval = null; } }
+box.addEventListener('mouseup', endHoldIfNeeded);
+box.addEventListener('touchend', endHoldIfNeeded);
+box.addEventListener('mouseleave', endHoldIfNeeded);
 
 // Attach click handler
 box.addEventListener('click', handleBoxClick);
