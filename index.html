@@ -63,9 +63,9 @@ button:disabled{opacity:0.5;filter:grayscale(30%)}
     <button id="tryAgain">Try Again</button>
   </div>
 
-  <div id="instructions" style="max-width:720px;margin:6px 0 12px;text-align:left;font-size:15px;color:#9fb9d6">
-    <strong>Try each mode:</strong>
-    <ul>
+  <details id="instructions" style="max-width:720px;margin:6px 0 12px;text-align:left;font-size:15px;color:#9fb9d6;padding:6px;border-radius:8px;background:rgba(255,255,255,0.01)">
+    <summary style="cursor:pointer;font-weight:600">How to play (click to expand)</summary>
+    <ul style="margin:8px 16px">
       <li><strong>Standard:</strong> click to count.</li>
       <li><strong>Jitter:</strong> box moves randomly per click.</li>
       <li><strong>Butterfly:</strong> must alternate left/right halves to count.</li>
@@ -73,7 +73,7 @@ button:disabled{opacity:0.5;filter:grayscale(30%)}
       <li><strong>Hold-Click:</strong> hold mouse down — clicks increment while held.</li>
       <li><strong>Double Click:</strong> double-click (two clicks counted) using dblclick.</li>
     </ul>
-  </div>
+  </details>
 
   <div style="display:flex;gap:16px;align-items:center;justify-content:center;flex-direction:column">
     <div id="timer">Time: 0</div>
@@ -87,7 +87,7 @@ button:disabled{opacity:0.5;filter:grayscale(30%)}
   <canvas id="confettiCanvas"></canvas>
 </div>
 
-  <footer style="width:100%;max-width:760px;margin-top:18px;color:rgba(230,238,248,0.8);text-align:center">
+  <footer style="position:fixed;left:50%;transform:translateX(-50%);bottom:8px;padding:6px 10px;border-radius:8px;background:rgba(2,6,23,0.6);color:rgba(230,238,248,0.9);font-size:13px">
     <small>© 2025 CPS Tester — <a href="privacy.html" style="color:#cfe9ff">Privacy Policy</a> • <a href="terms.html" style="color:#cfe9ff">Terms</a></small>
   </footer>
 
